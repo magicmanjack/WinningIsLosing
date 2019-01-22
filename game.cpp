@@ -25,7 +25,7 @@ int main(int argc, char * args[]) {
 	double timeNow = SDL_GetTicks(), timeThen = timeNow, ticksPerUpdate = 1000.0d / FPS; // Used for timing.
 	double delta = 0; // How many updates are needed.
 	bool canRender = false;
-	Uint32 timeOut = SDL_GetTicks() + 1000;
+	Uint32 timeOut = SDL_GetTicks() + 4000;
 	int updates = 0, frames = 0; // Keeps track of the updates and framerate.
 	
 	while(running) {
