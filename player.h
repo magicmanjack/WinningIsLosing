@@ -1,5 +1,8 @@
 #include<SDL.h>
 
+#ifndef _PLY_H_INCLUDED_
+#define _PLY_H_INCLUDED_
+
 class Player {
 	public:
 		Player(SDL_Renderer * r);
@@ -13,3 +16,5 @@ class Player {
 		double trueX, trueY; // A more accurate way of measuring the players position.
 		const double TERMINAL_VEL = 5.0, ACC = 0.2, GRV = 0.01;
 };
+
+#endif
