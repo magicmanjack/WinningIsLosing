@@ -4,6 +4,7 @@
 
 Player::Player(SDL_Renderer * r) {
 	SDL_Surface * sfce = SDL_LoadBMP("res\\Sprite.bmp");
+	SDL_SetColorKey(sfce, SDL_TRUE, SDL_MapRGB(sfce->format, 0, 0, 0));
 	tx = SDL_CreateTextureFromSurface(r, sfce);
 	SDL_FreeSurface(sfce);
 	rect.x = 350;
