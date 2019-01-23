@@ -9,7 +9,7 @@ class Player {
 		SDL_Rect rect;
 		SDL_Texture * tx;
 		void update();
-		void draw(SDL_Renderer * r);
+		void draw(SDL_Renderer * r, int offsetX, int offsetY);
 		void shareInput(SDL_Event * e);
 		bool left, right, up, down;
 		double xVel, yVel; // The X and Y velocity of the player.

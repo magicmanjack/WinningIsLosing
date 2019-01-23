@@ -13,6 +13,7 @@ void manageInput();
 
 Player * p; // Points to the player object.
 Map * currentMap; // Points to the location of the currently loaded map.
+int offsetX, offsetY; // The offset that the objects are rendered to get the appearance of scrolling.
 
 int main(int argc, char * args[]) {
 
@@ -29,6 +30,8 @@ int main(int argc, char * args[]) {
 	rend = SDL_CreateRenderer(win, -1, 0);
 	
 	p = new Player(rend);
+	offsetX = 0;
+	offsetY = 0;
 	currentMap = Map::loadMapOne(rend);
 	
 	running = true;
@@ -76,6 +79,8 @@ void update() {
 	manageInput();
 	p -> update(); // Updates the player object.
 	currentMap -> collision(p -> rect);
+	
+	offsetX = (WIN_WIDTH / 2) - ((p -> rect.x) + ((p -> rect.w) / 2));
 }
 
 void manageInput() {
@@ -91,6 +96,6 @@ void manageInput() {
 }
 
 void draw(SDL_Renderer * r) {
-	currentMap -> drawMap(r);
-	p->draw(r);
+	currentMap -> drawMap(r, offsetX, offsetY);
+	p -> draw(r, offsetX, offsetY);
 }

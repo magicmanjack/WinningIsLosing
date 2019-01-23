@@ -8,7 +8,7 @@ class Obstacle {
 		Obstacle(SDL_Renderer * r, int x, int y);
 		SDL_Rect rect;
 		SDL_Texture * tx;
-		void draw(SDL_Renderer * r);
+		void draw(SDL_Renderer * r, int offsetX, int offsetY);
 		bool flare; // For debugging purposes.
 };
 

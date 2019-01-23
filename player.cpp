@@ -21,10 +21,13 @@ Player::Player(SDL_Renderer * r) {
 	trueY = rect.y;
 }
 
-void Player::draw(SDL_Renderer * r) {
-	SDL_RenderCopy(r, tx, NULL, &rect);
+void Player::draw(SDL_Renderer * r, int offsetX, int offsetY) {
+	SDL_Rect offsRect = rect;
+	offsRect.x += offsetX;
+	offsRect.y += offsetY;
+	SDL_RenderCopy(r, tx, NULL, &offsRect);
 	SDL_SetRenderDrawColor(r, 0, 255, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderDrawRect(r, &rect);
+	SDL_RenderDrawRect(r, &offsRect);
 }
 
 void Player::shareInput(SDL_Event * e) {

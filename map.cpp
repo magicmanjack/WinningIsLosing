@@ -30,8 +30,8 @@ bool Map::collision(SDL_Rect rect) {
 	return collides;
 }
 
-void Map::drawMap(SDL_Renderer * r) {
+void Map::drawMap(SDL_Renderer * r, int offsetX, int offsetY) {
 	for(int i = 0; i < obstacles.size(); i++) {
-		obstacles[i] -> draw(r);	
+		obstacles[i] -> draw(r, offsetX, offsetY);	
 	}
 }
