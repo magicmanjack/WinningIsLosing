@@ -4,12 +4,16 @@
 #include "obstacle.h"
 #include "map.h"
 
+#include "enemy.h"
+
 const int WIN_WIDTH = 800, WIN_HEIGHT = 600, FPS = 60;
 bool running;
 
 void draw(SDL_Renderer * r);
 void update();
 void manageInput();
+
+Enemy * enem;
 
 Player * p; // Points to the player object.
 Map * currentMap; // Points to the location of the currently loaded map.
@@ -28,6 +32,8 @@ int main(int argc, char * args[]) {
 	WIN_WIDTH, WIN_HEIGHT, 0);
 	
 	rend = SDL_CreateRenderer(win, -1, 0);
+	
+	enem = new Enemy(0, 250); // Testing.
 	
 	p = new Player(rend);
 	offsetX = 0;
@@ -80,6 +86,9 @@ void update() {
 	p -> update(); // Updates the player object.
 	currentMap -> collision(p -> rect);
 	
+	enem -> target = p -> rect;
+	enem -> update();
+	
 	offsetX = (WIN_WIDTH / 2) - ((p -> rect.x) + ((p -> rect.w) / 2));
 }
 
@@ -98,4 +107,5 @@ void manageInput() {
 void draw(SDL_Renderer * r) {
 	currentMap -> drawMap(r, offsetX, offsetY);
 	p -> draw(r, offsetX, offsetY);
+	enem -> draw(r, offsetX, offsetY);
 }
