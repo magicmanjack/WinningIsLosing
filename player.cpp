@@ -1,5 +1,6 @@
 #include "SDL.h"
 #include "player.h"
+#include <math.h>
 
 Player::Player(SDL_Renderer * r) {
 	SDL_Surface * sfce = SDL_LoadBMP("res\\Sprite.bmp");
@@ -9,11 +10,14 @@ Player::Player(SDL_Renderer * r) {
 	rect.y = 250;
 	rect.w = 100;
 	rect.h = 100;
-	speed = 5;
 	up = false;
 	down = false;
 	left = false;
 	right = false;
+	xVel = 0;
+	yVel = 0;
+	trueX = rect.x;
+	trueY = rect.y;
 }
 
 void Player::draw(SDL_Renderer * r) {
@@ -55,15 +59,31 @@ void Player::shareInput(SDL_Event * e) {
 
 void Player::update() {
 	if(left) {
-		rect.x -= speed;
+		xVel -= ACC;
 	}
 	if(right) {
-		rect.x += speed;
+		xVel += ACC;
 	}
 	if(up) {
-		rect.y -= speed;
+		yVel -=  ACC;
 	}
 	if(down) {
-		rect.y += speed;
+		yVel += ACC;
 	}
+	if(xVel > 0.0) {
+		xVel -= (xVel * xVel) / ((TERMINAL_VEL * TERMINAL_VEL) / ACC);
+	}
+	if(xVel < 0.0) {
+		xVel += (xVel * xVel) / ((TERMINAL_VEL * TERMINAL_VEL) / ACC);
+	}
+	if(yVel > 0.0) {
+		yVel -= (yVel * yVel) / ((TERMINAL_VEL * TERMINAL_VEL) / ACC);
+	}
+	if(yVel < 0.0) {
+		yVel += (yVel * yVel) / ((TERMINAL_VEL * TERMINAL_VEL) / ACC);
+	}
+	trueX += xVel;
+	trueY += yVel;
+	rect.x = trueX;
+	rect.y = trueY;
 }

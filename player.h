@@ -9,5 +9,7 @@ class Player {
 		void draw(SDL_Renderer * r);
 		void shareInput(SDL_Event * e);
 		bool left, right, up, down;
-		int speed;
+		double xVel, yVel; // The X and Y velocity of the player.
+		double trueX, trueY; // A more accurate way of measuring the players position.
+		const double TERMINAL_VEL = 5.0, ACC = 0.2;
 };
