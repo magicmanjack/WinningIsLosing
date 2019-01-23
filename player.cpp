@@ -21,9 +21,9 @@ Player::Player(SDL_Renderer * r) {
 }
 
 void Player::draw(SDL_Renderer * r) {
-	SDL_SetRenderDrawColor(r, 0, 255, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderFillRect(r, &rect);
 	SDL_RenderCopy(r, tx, NULL, &rect);
+	SDL_SetRenderDrawColor(r, 0, 255, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderDrawRect(r, &rect);
 }
 
 void Player::shareInput(SDL_Event * e) {
@@ -82,6 +82,7 @@ void Player::update() {
 	if(yVel < 0.0) {
 		yVel += (yVel * yVel) / ((TERMINAL_VEL * TERMINAL_VEL) / ACC);
 	}
+	yVel += GRV; // Applies gravity to the yVel.
 	trueX += xVel;
 	trueY += yVel;
 	rect.x = trueX;
