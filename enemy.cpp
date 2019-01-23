@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <math.h>
 #include "enemy.h"
 
 SDL_Rect Enemy::target;
@@ -18,16 +19,22 @@ void Enemy::update() {
 	int targetDistX = (rect.x  + (rect.w / 2)) - (target.x + (target.w / 2));
 	int targetDistY = (rect.y  + (rect.h / 2)) - (target.y + (target.h / 2));
 	
-	if(targetDistX > 0) {
-		xVel -= ACC;
-	}else if(targetDistX < 0) {
-		xVel += ACC;
-	}
+	int targetDist = sqrt ((targetDistX * targetDistX) + (targetDistY * targetDistY));
 	
-	if(targetDistY > 0) {
-		yVel -= ACC;
-	}else if(targetDistY < 0) {
-		yVel += ACC;
+	if(targetDist < ACT_RADIUS) {
+	
+		if(targetDistX > 0) {
+			xVel -= ACC;
+		}else if(targetDistX < 0) {
+			xVel += ACC;
+		}
+	
+		if(targetDistY > 0) {
+			yVel -= ACC;
+		}else if(targetDistY < 0) {
+			yVel += ACC;
+		}
+	
 	}
 	
 	if(xVel > 0.0) {

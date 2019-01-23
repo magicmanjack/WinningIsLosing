@@ -11,7 +11,7 @@ class Enemy {
 		static SDL_Rect target; // The target to follow.
 		void update();
 		void draw(SDL_Renderer * r, int offsetX, int offsetY);
-		const double TERMINAL_VEL = 3.0, ACC = 0.1, GRV = 0.01;
+		const double TERMINAL_VEL = 3.0, ACC = 0.1, GRV = 0.01, ACT_RADIUS = 300;
 };
 
 #endif
