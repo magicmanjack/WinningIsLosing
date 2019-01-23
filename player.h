@@ -7,4 +7,7 @@ class Player {
 		SDL_Texture * tx;
 		void update();
 		void draw(SDL_Renderer * r);
+		void shareInput(SDL_Event * e);
+		bool left, right, up, down;
+		int speed;
 };

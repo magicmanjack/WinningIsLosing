@@ -5,14 +5,11 @@
 const int WIN_WIDTH = 800, WIN_HEIGHT = 600, FPS = 60;
 bool running;
 
-bool left, right, up, down;
-
 void draw(SDL_Renderer * r);
 void update();
 void manageInput();
 
-Player * p;
-int speed = 5;
+Player * p; // Points to the player object.
 
 int main(int argc, char * args[]) {
 
@@ -73,18 +70,7 @@ int main(int argc, char * args[]) {
 
 void update() {
 	manageInput();
-	if(left) {
-		p->rect.x -= speed;
-	}
-	if(right) {
-		p->rect.x += speed;
-	}
-	if(up) {
-		p->rect.y -= speed;
-	}
-	if(down) {
-		p->rect.y += speed;
-	}
+	p -> update(); // Updates the player object.
 }
 
 void manageInput() {
@@ -95,34 +81,7 @@ void manageInput() {
 				running = false; // Exits game loop and closes application.
 			}
 		}
-		if(event.type == SDL_KEYDOWN) {
-			if(event.key.keysym.sym == SDLK_a) {
-				left = true;
-			}
-			if(event.key.keysym.sym  == SDLK_d) {
-				right = true;
-			}
-			if(event.key.keysym.sym == SDLK_w) {
-				up = true;
-			}
-			if(event.key.keysym.sym == SDLK_s) {
-				down = true;
-			}
-		}
-		if(event.type == SDL_KEYUP) {
-			if(event.key.keysym.sym == SDLK_a) {
-				left = false;
-			}
-			if(event.key.keysym.sym  == SDLK_d) {
-				right = false;
-			}
-			if(event.key.keysym.sym == SDLK_w) {
-				up = false;
-			}
-			if(event.key.keysym.sym == SDLK_s) {
-				down = false;
-			}
-		}
+		p->shareInput(&event); // Shares the input with the player.
 	}
 }
 
