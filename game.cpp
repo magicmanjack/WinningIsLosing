@@ -1,6 +1,7 @@
 #include<SDL.h>
 #include<iostream>
 #include "player.h"
+#include "obstacle.h"
 
 const int WIN_WIDTH = 800, WIN_HEIGHT = 600, FPS = 60;
 bool running;
@@ -10,6 +11,7 @@ void update();
 void manageInput();
 
 Player * p; // Points to the player object.
+Obstacle * ob;
 
 int main(int argc, char * args[]) {
 
@@ -26,6 +28,7 @@ int main(int argc, char * args[]) {
 	rend = SDL_CreateRenderer(win, -1, 0);
 	
 	p = new Player(rend);
+	ob = new Obstacle(rend, 350, 500);
 	
 	running = true;
 	double timeNow = SDL_GetTicks(), timeThen = timeNow, ticksPerUpdate = 1000.0d / FPS; // Used for timing.
@@ -87,4 +90,5 @@ void manageInput() {
 
 void draw(SDL_Renderer * r) {
 	p->draw(r);
+	ob->draw(r);
 }
