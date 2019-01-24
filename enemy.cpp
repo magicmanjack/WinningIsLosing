@@ -13,6 +13,7 @@ Enemy::Enemy(int x, int y) {
 	trueY = y;
 	xVel = 0;
 	yVel = 0;
+	bool activated = false;
 }
 
 void Enemy::update() {
@@ -22,7 +23,9 @@ void Enemy::update() {
 	int targetDist = sqrt ((targetDistX * targetDistX) + (targetDistY * targetDistY));
 	
 	if(targetDist < ACT_RADIUS) {
-	
+		
+		activated = true;
+		
 		if(targetDistX > 0) {
 			xVel -= ACC;
 		}else if(targetDistX < 0) {
@@ -49,8 +52,9 @@ void Enemy::update() {
 	if(yVel < 0.0) {
 		yVel += (yVel * yVel) / ((TERMINAL_VEL * TERMINAL_VEL) / ACC);
 	}
-	
-	yVel += GRV;
+	if(activated) {
+		yVel += GRV;
+	}
 	trueX += xVel;
 	trueY += yVel;
 	rect.x = trueX;

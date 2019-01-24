@@ -4,8 +4,11 @@
 
 Map * Map::loadMapOne(SDL_Renderer * r) {
 	Map * map = new Map();
-	map -> obstacles.push_back(new Obstacle(r, 350, 500));
-	map -> obstacles.push_back(new Obstacle(r, 700, 0));
+	map -> obstacles.push_back(new Obstacle(r, 350, 500, NULL));
+	map -> obstacles.push_back(new Obstacle(r, 700, 0, NULL));
+	map -> enemies.push_back(new Enemy(0, 100));
+	map -> enemies.push_back(new Enemy(0, 200));
+	map -> enemies.push_back(new Enemy(500, 300));
 	return map;
 }
 
@@ -17,21 +20,49 @@ Map * Map::loadMapThree(SDL_Renderer * r) {
 	
 }
 
-bool Map::collision(SDL_Rect rect) {
-	bool collides = false;
+void Map::update() {
+	Enemy::target = plyr -> rect;
+	for(int i = 0; i < enemies.size(); i++) {
+		enemies[i] -> update();
+	}
+	std::vector<int> toRemove;
+	for(int i = 0; i < enemies.size(); i++) {
+		bool removed;
+		for(int j = 0; j < enemies.size(); j++) {
+			if(collision(enemies[i] -> rect, enemies[j] -> rect)  && i != j) {
+				toRemove.push_back(i);
+				removed = true;
+			}
+		}
+		if(!removed && collision(enemies[i] -> rect, plyr -> rect)) {
+			toRemove.push_back(i);
+		}
+	}
+	while(toRemove.size() > 0) {
+		delete enemies[toRemove[toRemove.size() - 1]];
+		enemies.erase(enemies.begin() + toRemove[toRemove.size() - 1]);
+		toRemove.erase(toRemove.begin() + toRemove.size() - 1);
+	}
 	for(int i = 0; i < obstacles.size(); i++) {
-		SDL_Rect oRect = obstacles[i] -> rect;
-		if(rect.x + rect.w >= oRect.x && rect.x <= oRect.x + oRect.w
-		&& rect.y + rect.h >= oRect.y && rect.y <= oRect.y + oRect.h) {
-			collides = true;
+		if(collision(plyr -> rect, obstacles[i] -> rect)) {
 			obstacles[i] -> flare = true;
 		}
 	}
-	return collides;
+}
+
+bool Map::collision(SDL_Rect rA, SDL_Rect rB) {
+	if(rA.x + rA.w >= rB.x && rA.x <= rB.x + rB.w
+		&& rA.y + rA.h >= rB.y && rA.y <= rB.y + rB.h) {
+		return true;
+	}
+	return false;
 }
 
 void Map::drawMap(SDL_Renderer * r, int offsetX, int offsetY) {
 	for(int i = 0; i < obstacles.size(); i++) {
 		obstacles[i] -> draw(r, offsetX, offsetY);	
+	}
+	for(int i =  0; i < enemies.size(); i++) {
+		enemies[i] -> draw(r, offsetX, offsetY);
 	}
 }

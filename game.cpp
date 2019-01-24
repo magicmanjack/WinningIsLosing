@@ -32,6 +32,7 @@ int main(int argc, char * args[]) {
 	offsetX = 0;
 	offsetY = 0;
 	currentMap = Map::loadMapOne(rend);
+	currentMap -> plyr = p;
 	
 	running = true;
 	double timeNow = SDL_GetTicks(), timeThen = timeNow, ticksPerUpdate = 1000.0d / FPS; // Used for timing.
@@ -77,7 +78,8 @@ int main(int argc, char * args[]) {
 void update() {
 	manageInput();
 	p -> update(); // Updates the player object.
-	currentMap -> collision(p -> rect);
+	Enemy::target = p -> rect;
+	currentMap -> update();
 	
 	offsetX = (WIN_WIDTH / 2) - ((p -> rect.x) + ((p -> rect.w) / 2));
 }

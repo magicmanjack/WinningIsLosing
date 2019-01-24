@@ -1,13 +1,18 @@
 #include <SDL.h>
 #include <vector>
 #include "obstacle.h"
+#include "enemy.h"
+#include "player.h"
 
 class Map {
 	public:
 		std::vector<Obstacle *> obstacles;
+		std::vector<Enemy *> enemies;
+		Player * plyr;
 		static Map * loadMapOne(SDL_Renderer * r);
 		static Map * loadMapTwo(SDL_Renderer * r);
 		static Map * loadMapThree(SDL_Renderer * r);
-		bool collision(SDL_Rect rect);
+		bool collision(SDL_Rect rA, SDL_Rect rB);
+		void update();
 		void drawMap(SDL_Renderer * r, int offsetX, int offsetY);
 };
