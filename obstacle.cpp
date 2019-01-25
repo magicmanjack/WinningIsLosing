@@ -11,7 +11,7 @@ Obstacle::Obstacle(SDL_Renderer * r, int x, int y, const char * txFile) {
 	rect.x = x;
 	rect.y = y;
 	rect.w = 100;
-	rect.h = 100;
+	rect.h = 200;
 	flare = false;
 	
 }
@@ -24,9 +24,11 @@ void Obstacle::draw(SDL_Renderer * r, int offsetX, int offsetY) {
 	if(tx != NULL) {
 		SDL_RenderCopy(r, tx, NULL, &offsRect);
 	}
+	/*
 	SDL_RenderDrawRect(r, &offsRect);
 	if(flare) {
 		SDL_RenderFillRect(r, &offsRect);
 		flare = false;
 	}
+	*/
 }

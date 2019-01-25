@@ -6,7 +6,7 @@
 const int WIN_WIDTH = 800, WIN_HEIGHT = 600, FPS = 60;
 bool running;
 
-void draw(SDL_Renderer * r);
+void draw();
 void update();
 void manageInput();
 
@@ -14,10 +14,13 @@ Player * p; // Points to the player object.
 Map * currentMap; // Points to the location of the currently loaded map.
 int offsetX, offsetY; // The offset that the objects are rendered to get the appearance of scrolling.
 
+bool pause;
+SDL_Renderer * rend;
+
 int main(int argc, char * args[]) {
 
 	SDL_Window * win = NULL;
-	SDL_Renderer * rend = NULL;
+	rend = NULL;
 	
 	SDL_Init(SDL_INIT_VIDEO);
 	
@@ -33,6 +36,8 @@ int main(int argc, char * args[]) {
 	offsetY = 0;
 	currentMap = Map::loadMapOne(rend);
 	currentMap -> plyr = p;
+	
+	pause = false;
 	
 	running = true;
 	double timeNow = SDL_GetTicks(), timeThen = timeNow, ticksPerUpdate = 1000.0d / FPS; // Used for timing.
@@ -51,12 +56,12 @@ int main(int argc, char * args[]) {
 			update();
 			canRender = true;
 			updates++;
-		}
+		} 
 		
 		if(canRender) {
 			SDL_SetRenderDrawColor(rend, 0, 0, 0, SDL_ALPHA_OPAQUE); // Sets background to black.
 			SDL_RenderClear(rend);
-			draw(rend);
+			draw();
 			SDL_RenderPresent(rend);
 			canRender = false;
 			frames++;
@@ -77,11 +82,23 @@ int main(int argc, char * args[]) {
 
 void update() {
 	manageInput();
-	p -> update(); // Updates the player object.
-	Enemy::target = p -> rect;
-	currentMap -> update();
-	
-	offsetX = (WIN_WIDTH / 2) - ((p -> rect.x) + ((p -> rect.w) / 2));
+	if(!pause) {
+		p -> update(); // Updates the player object.
+		currentMap -> update();
+		offsetX = (WIN_WIDTH / 2) - ((p -> rect.x) + ((p -> rect.w) / 2));
+		
+		if(p -> dead) {
+			pause = true;
+		}
+	} else if(p -> space) {
+		pause = false;
+		delete currentMap;
+		currentMap = Map::loadMapOne(rend);
+		currentMap -> plyr = p;
+		p -> dead = false;
+		p -> trueX = currentMap -> spawnX;
+		p -> trueY = currentMap -> spawnY;
+	}
 }
 
 void manageInput() {
@@ -96,7 +113,7 @@ void manageInput() {
 	}
 }
 
-void draw(SDL_Renderer * r) {
-	currentMap -> drawMap(r, offsetX, offsetY);
-	p -> draw(r, offsetX, offsetY);
+void draw() {
+	currentMap -> drawMap(rend, offsetX, offsetY);
+	p -> draw(rend, offsetX, offsetY);
 }

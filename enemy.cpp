@@ -4,7 +4,7 @@
 
 SDL_Rect Enemy::target;
 
-Enemy::Enemy(int x, int y) {
+Enemy::Enemy(int x, int y, SDL_Renderer * r) {
 	rect.x = x;
 	rect.y = y;
 	rect.w = 50;
@@ -14,6 +14,10 @@ Enemy::Enemy(int x, int y) {
 	xVel = 0;
 	yVel = 0;
 	bool activated = false;
+	SDL_Surface * sfce = SDL_LoadBMP("res\\bot.bmp");
+	SDL_SetColorKey(sfce, SDL_TRUE, SDL_MapRGB(sfce->format, 0, 0, 0));
+	tx = SDL_CreateTextureFromSurface(r, sfce);
+	SDL_FreeSurface(sfce);
 }
 
 void Enemy::update() {
@@ -65,6 +69,7 @@ void Enemy::draw(SDL_Renderer * r, int offsetX, int offsetY) {
 	SDL_Rect offsRect = rect;
 	offsRect.x += offsetX;
 	offsRect.y += offsetY;
+	SDL_RenderCopy(r, tx, NULL, &offsRect);
 	SDL_SetRenderDrawColor(r, 255, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderDrawRect(r, &offsRect);
+	//SDL_RenderDrawRect(r, &offsRect);
 }

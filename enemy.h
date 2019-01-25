@@ -5,8 +5,9 @@
 
 class Enemy {
 	public:
-		Enemy(int x, int y);
+		Enemy(int x, int y, SDL_Renderer * r);
 		SDL_Rect rect;
+		SDL_Texture * tx;
 		double trueX, trueY, xVel, yVel;
 		static SDL_Rect target; // The target to follow.
 		void update();

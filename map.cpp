@@ -2,13 +2,31 @@
 #include "map.h"
 #include "obstacle.h"
 
+int Map::scrBoundsW = 800;
+int Map::scrBoundsH = 600;
+
+Map::~Map() {
+	for(std::vector<Obstacle *>::iterator pObj = obstacles.begin(); pObj != obstacles.end(); pObj++) {
+		delete *pObj;
+	}
+	for(std::vector<Enemy *>::iterator pObj = enemies.begin(); pObj != enemies.end(); pObj++) {
+		delete *pObj;
+	}
+	SDL_Log("DELETED MAP");
+}
+
 Map * Map::loadMapOne(SDL_Renderer * r) {
 	Map * map = new Map();
-	map -> obstacles.push_back(new Obstacle(r, 350, 500, NULL));
-	map -> obstacles.push_back(new Obstacle(r, 700, 0, NULL));
-	map -> enemies.push_back(new Enemy(0, 100));
-	map -> enemies.push_back(new Enemy(0, 200));
-	map -> enemies.push_back(new Enemy(500, 300));
+	map -> spawnX = 350;
+	map -> spawnY = 250;
+	map -> obstacles.push_back(new Obstacle(r, 350, 400, "res\\floor.bmp"));
+	map -> obstacles.push_back(new Obstacle(r, 700, 0, "res\\roof.bmp"));
+	Obstacle * cb = new Obstacle(r, 800, 250, "res\\cube.bmp");
+	cb -> rect.h = 100;
+	map -> obstacles.push_back(cb);
+	map -> enemies.push_back(new Enemy(0, 100, r));
+	map -> enemies.push_back(new Enemy(0, 200, r));
+	map -> enemies.push_back(new Enemy(500, 300, r));
 	return map;
 }
 
@@ -36,6 +54,7 @@ void Map::update() {
 		}
 		if(!removed && collision(enemies[i] -> rect, plyr -> rect)) {
 			toRemove.push_back(i);
+			plyr -> dead = true;
 		}
 	}
 	while(toRemove.size() > 0) {
@@ -46,6 +65,7 @@ void Map::update() {
 	for(int i = 0; i < obstacles.size(); i++) {
 		if(collision(plyr -> rect, obstacles[i] -> rect)) {
 			obstacles[i] -> flare = true;
+			plyr -> dead = true;
 		}
 	}
 }

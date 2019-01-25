@@ -6,6 +6,7 @@
 
 class Map {
 	public:
+		static int scrBoundsW, scrBoundsH;
 		std::vector<Obstacle *> obstacles;
 		std::vector<Enemy *> enemies;
 		Player * plyr;
@@ -15,4 +16,6 @@ class Map {
 		bool collision(SDL_Rect rA, SDL_Rect rB);
 		void update();
 		void drawMap(SDL_Renderer * r, int offsetX, int offsetY);
+		int spawnX, spawnY;
+		~Map();
 };
