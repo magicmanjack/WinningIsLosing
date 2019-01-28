@@ -13,7 +13,7 @@ Enemy::Enemy(int x, int y, SDL_Renderer * r) {
 	trueY = y;
 	xVel = 0;
 	yVel = 0;
-	bool activated = false;
+	activated = false;
 	SDL_Surface * sfce = SDL_LoadBMP("res\\bot.bmp");
 	SDL_SetColorKey(sfce, SDL_TRUE, SDL_MapRGB(sfce->format, 0, 0, 0));
 	tx = SDL_CreateTextureFromSurface(r, sfce);

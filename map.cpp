@@ -27,11 +27,17 @@ Map * Map::loadMapOne(SDL_Renderer * r) {
 	map -> enemies.push_back(new Enemy(0, 100, r));
 	map -> enemies.push_back(new Enemy(0, 200, r));
 	map -> enemies.push_back(new Enemy(825, 287, r));
+	map -> finish = new FinishLine(r, 1000);
 	return map;
 }
 
 Map * Map::loadMapTwo(SDL_Renderer * r) {
-	
+	Map * map = new Map();
+	map -> spawnX = 350;
+	map -> spawnY = 250;
+	map -> obstacles.push_back(new Obstacle(r, 350, 400, "res\\floor.bmp"));
+	map -> enemies.push_back(new Enemy(0, 0, r));
+	return map;
 }
 
 Map * Map::loadMapThree(SDL_Renderer * r) {
@@ -42,6 +48,9 @@ Map * Map::loadMap(int i, SDL_Renderer * r) {
 	switch(i) {
 		case 1:
 			return loadMapOne(r);
+			break;
+		case 2:
+			return loadMapTwo(r);
 			break;
 	}
 	return NULL;
@@ -94,4 +103,5 @@ void Map::drawMap(SDL_Renderer * r, int offsetX, int offsetY) {
 	for(int i =  0; i < enemies.size(); i++) {
 		enemies[i] -> draw(r, offsetX, offsetY);
 	}
+	finish -> draw(r, offsetX, offsetY);
 }

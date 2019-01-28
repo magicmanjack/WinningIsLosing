@@ -3,12 +3,14 @@
 #include "obstacle.h"
 #include "enemy.h"
 #include "player.h"
+#include "finishLine.h"
 
 class Map {
 	public:
 		static int scrBoundsW, scrBoundsH;
 		std::vector<Obstacle *> obstacles;
 		std::vector<Enemy *> enemies;
+		FinishLine * finish;
 		Player * plyr;
 		static Map * loadMapOne(SDL_Renderer * r);
 		static Map * loadMapTwo(SDL_Renderer * r);

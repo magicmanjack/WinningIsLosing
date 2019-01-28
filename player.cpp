@@ -7,6 +7,7 @@ Player::Player(SDL_Renderer * r) {
 	SDL_SetColorKey(sfce, SDL_TRUE, SDL_MapRGB(sfce->format, 0, 0, 0));
 	tx = SDL_CreateTextureFromSurface(r, sfce);
 	sfce = SDL_LoadBMP("res\\plyr_bk.bmp");
+	SDL_SetColorKey(sfce, SDL_TRUE, SDL_MapRGB(sfce->format, 0, 0, 0));
 	txBk = SDL_CreateTextureFromSurface(r, sfce);
 	SDL_FreeSurface(sfce);
 	txCurrent = tx;
