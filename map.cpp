@@ -26,7 +26,7 @@ Map * Map::loadMapOne(SDL_Renderer * r) {
 	map -> obstacles.push_back(cb);
 	map -> enemies.push_back(new Enemy(0, 100, r));
 	map -> enemies.push_back(new Enemy(0, 200, r));
-	map -> enemies.push_back(new Enemy(500, 300, r));
+	map -> enemies.push_back(new Enemy(825, 287, r));
 	return map;
 }
 
@@ -36,6 +36,15 @@ Map * Map::loadMapTwo(SDL_Renderer * r) {
 
 Map * Map::loadMapThree(SDL_Renderer * r) {
 	
+}
+
+Map * Map::loadMap(int i, SDL_Renderer * r) {
+	switch(i) {
+		case 1:
+			return loadMapOne(r);
+			break;
+	}
+	return NULL;
 }
 
 void Map::update() {
@@ -63,7 +72,7 @@ void Map::update() {
 		toRemove.erase(toRemove.begin() + toRemove.size() - 1);
 	}
 	for(int i = 0; i < obstacles.size(); i++) {
-		if(collision(plyr -> rect, obstacles[i] -> rect)) {
+		if(collision(plyr -> rect, obstacles[i] -> rect) && obstacles[i] -> solid) {
 			obstacles[i] -> flare = true;
 			plyr -> dead = true;
 		}

@@ -13,7 +13,7 @@ Obstacle::Obstacle(SDL_Renderer * r, int x, int y, const char * txFile) {
 	rect.w = 100;
 	rect.h = 200;
 	flare = false;
-	
+	solid = true;
 }
 
 void Obstacle::draw(SDL_Renderer * r, int offsetX, int offsetY) {

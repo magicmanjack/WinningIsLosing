@@ -10,6 +10,7 @@ class Obstacle {
 		SDL_Texture * tx;
 		void draw(SDL_Renderer * r, int offsetX, int offsetY);
 		bool flare; // For debugging purposes.
+		bool solid; // For if the obstacle can collide with the player.
 };
 
 #endif

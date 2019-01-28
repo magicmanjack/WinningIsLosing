@@ -12,6 +12,7 @@ void manageInput();
 
 Player * p; // Points to the player object.
 Map * currentMap; // Points to the location of the currently loaded map.
+int mapLevel; // Keeps track of the map number.
 int offsetX, offsetY; // The offset that the objects are rendered to get the appearance of scrolling.
 
 bool pause;
@@ -34,7 +35,8 @@ int main(int argc, char * args[]) {
 	p = new Player(rend);
 	offsetX = 0;
 	offsetY = 0;
-	currentMap = Map::loadMapOne(rend);
+	mapLevel = 1;
+	currentMap = Map::loadMap(mapLevel, rend);
 	currentMap -> plyr = p;
 	
 	pause = false;
@@ -85,15 +87,14 @@ void update() {
 	if(!pause) {
 		p -> update(); // Updates the player object.
 		currentMap -> update();
-		offsetX = (WIN_WIDTH / 2) - ((p -> rect.x) + ((p -> rect.w) / 2));
-		
+		offsetX = (WIN_WIDTH / 2) - ((p -> rect.x) + ((p -> rect.w) / 2)); 
 		if(p -> dead) {
 			pause = true;
 		}
 	} else if(p -> space) {
 		pause = false;
 		delete currentMap;
-		currentMap = Map::loadMapOne(rend);
+		currentMap = Map::loadMap(mapLevel, rend);
 		currentMap -> plyr = p;
 		p -> dead = false;
 		p -> trueX = currentMap -> spawnX;
