@@ -16,6 +16,7 @@ class Map {
 		static Map * loadMapTwo(SDL_Renderer * r);
 		static Map * loadMapThree(SDL_Renderer * r);
 		static Map * loadMap(int i, SDL_Renderer * r);
+		static const int NUM_MAPS;
 		bool collision(SDL_Rect rA, SDL_Rect rB);
 		void update();
 		void drawMap(SDL_Renderer * r, int offsetX, int offsetY);

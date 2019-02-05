@@ -9,6 +9,7 @@ bool running;
 void draw();
 void update();
 void manageInput();
+void prepMap(int i);
 
 Player * p; // Points to the player object.
 Map * currentMap; // Points to the location of the currently loaded map.
@@ -38,6 +39,8 @@ int main(int argc, char * args[]) {
 	mapLevel = 1;
 	currentMap = Map::loadMap(mapLevel, rend);
 	currentMap -> plyr = p;
+	p -> trueX = currentMap -> spawnX;
+	p -> trueY = currentMap -> spawnY;
 	
 	pause = false;
 	
@@ -82,6 +85,17 @@ int main(int argc, char * args[]) {
 	return 0;
 }
 
+void prepMap(int i) {
+	if(i <= Map::NUM_MAPS) {
+		delete currentMap; // The current map is removed from memory.
+		currentMap = Map::loadMap(i, rend);
+		p = new Player(rend);
+		currentMap -> plyr = p;
+		p -> trueX = currentMap -> spawnX;
+		p -> trueY = currentMap -> spawnY;
+	}
+}
+
 void update() {
 	manageInput();
 	if(!pause) {
@@ -89,16 +103,16 @@ void update() {
 		currentMap -> update();
 		offsetX = (WIN_WIDTH / 2) - ((p -> rect.x) + ((p -> rect.w) / 2)); 
 		if(p -> dead) {
-			pause = true;
+			pause = true; // Pauses the game.
 		}
-	} else if(p -> space) {
-		pause = false;
-		delete currentMap;
-		currentMap = Map::loadMap(mapLevel, rend);
-		currentMap -> plyr = p;
-		p -> dead = false;
-		p -> trueX = currentMap -> spawnX;
-		p -> trueY = currentMap -> spawnY;
+	} else if(p -> space && p -> dead) {
+		pause = false; // Un-pauses the game.
+		prepMap(mapLevel); // Loads in a fresh new map.
+	}
+	if(p -> space && currentMap -> finish -> activated) {
+		SDL_Log("Finish");
+		mapLevel++; // increments the level number.
+		prepMap(mapLevel); // Creates a new map and connects the player to it.
 	}
 }
 
