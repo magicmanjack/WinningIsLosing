@@ -1,7 +1,6 @@
 #include<SDL.h>
 #include<iostream>
 #include "player.h"
-#include "map.h"
 
 const int WIN_WIDTH = 800, WIN_HEIGHT = 600, FPS = 60;
 bool running;
@@ -9,11 +8,8 @@ bool running;
 void draw();
 void update();
 void manageInput();
-void prepMap(int i);
 
 Player * p; // Points to the player object.
-Map * currentMap; // Points to the location of the currently loaded map.
-int mapLevel; // Keeps track of the map number.
 int offsetX, offsetY; // The offset that the objects are rendered to get the appearance of scrolling.
 
 bool pause;
@@ -32,15 +28,7 @@ int main(int argc, char * args[]) {
 	WIN_WIDTH, WIN_HEIGHT, 0);
 	
 	rend = SDL_CreateRenderer(win, -1, 0);
-	
 	p = new Player(rend);
-	offsetX = 0;
-	offsetY = 0;
-	mapLevel = 1;
-	currentMap = Map::loadMap(mapLevel, rend);
-	currentMap -> plyr = p;
-	p -> trueX = currentMap -> spawnX;
-	p -> trueY = currentMap -> spawnY;
 	
 	pause = false;
 	
@@ -85,35 +73,9 @@ int main(int argc, char * args[]) {
 	return 0;
 }
 
-void prepMap(int i) {
-	if(i <= Map::NUM_MAPS) {
-		delete currentMap; // The current map is removed from memory.
-		currentMap = Map::loadMap(i, rend);
-		p = new Player(rend);
-		currentMap -> plyr = p;
-		p -> trueX = currentMap -> spawnX;
-		p -> trueY = currentMap -> spawnY;
-	}
-}
-
 void update() {
-	manageInput();
-	if(!pause) {
-		p -> update(); // Updates the player object.
-		currentMap -> update();
-		offsetX = (WIN_WIDTH / 2) - ((p -> rect.x) + ((p -> rect.w) / 2)); 
-		if(p -> dead) {
-			pause = true; // Pauses the game.
-		}
-	} else if(p -> space && p -> dead) {
-		pause = false; // Un-pauses the game.
-		prepMap(mapLevel); // Loads in a fresh new map.
-	}
-	if(p -> space && currentMap -> finish -> activated) {
-		SDL_Log("Finish");
-		mapLevel++; // increments the level number.
-		prepMap(mapLevel); // Creates a new map and connects the player to it.
-	}
+	manageInput(); // Checks and manages input.
+	p->update();
 }
 
 void manageInput() {
@@ -129,6 +91,5 @@ void manageInput() {
 }
 
 void draw() {
-	currentMap -> drawMap(rend, offsetX, offsetY);
 	p -> draw(rend, offsetX, offsetY);
 }
